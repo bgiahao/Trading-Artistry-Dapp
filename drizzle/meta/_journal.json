@@ -8,6 +8,20 @@
       "when": 1788785580464,
       "tag": "0000_initial_users",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1791596646834,
+      "tag": "0001_majestic_justin_hammer",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1791597333684,
+      "tag": "0002_wealthy_arclight",
+      "breakpoints": true
     }
   ]
 }
