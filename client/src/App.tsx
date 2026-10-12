@@ -10,6 +10,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/dashboard" component={Home} />
       <Route path="/journal" component={Home} />
       <Route path="/analytics" component={Home} />
       <Route path="/404" component={NotFound} />
