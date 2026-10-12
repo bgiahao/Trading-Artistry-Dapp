@@ -7,3 +7,6 @@
 - [ ] **Trade Log Table và bộ lọc** — Danh sách lệnh rõ ràng hỗ trợ tìm kiếm và lọc theo Loại tài sản, Setup, khoảng thời gian và kết quả Thắng/Thua/Hòa; có thao tác xóa và hiển thị liên kết chart/ghi chú.
 - [ ] **Import/Export CSV và Excel** — Người dùng có thể xuất toàn bộ dữ liệu giao dịch của mình ra CSV và file Excel-compatible; có thể nhập CSV/TSV/Excel HTML và lưu hàng loạt vào nhật ký.
 - [ ] **Responsive dark-mode UI và mã nguồn sạch** — Dark Mode mặc định, responsive tốt trên desktop và điện thoại, cấu trúc React/Express/tRPC/Drizzle rõ ràng, biểu đồ dùng Recharts, route manifest được khai báo và project có thể build/check.
+
+- [ ] New trades may be saved as incomplete drafts with optional fields; users can edit them later from Trade Journal.
+- [ ] Incomplete trades, except chart image links and notes, must be excluded from Overview and Analytics performance calculations until all required trade fields are filled.

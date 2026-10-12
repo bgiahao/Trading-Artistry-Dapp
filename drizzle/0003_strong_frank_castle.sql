@@ -1,0 +1,1 @@
+ALTER TABLE `trades` ADD `isComplete` boolean DEFAULT true NOT NULL;
