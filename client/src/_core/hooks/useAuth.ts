@@ -13,7 +13,7 @@ export function useAuth(options?: UseAuthOptions) {
   const utils = trpc.useUtils();
   const [supabaseSessionReady, setSupabaseSessionReady] = useState(!isSupabaseConfigured || isGuestMode);
   const [supabaseUser, setSupabaseUser] = useState<{ email?: string; user_metadata?: { full_name?: string; name?: string } } | null>(null);
-  const meQuery = trpc.auth.me.useQuery(undefined, { retry: false, refetchOnWindowFocus: false, enabled: true });
+  const meQuery = trpc.auth.me.useQuery(undefined, { retry: false, refetchOnWindowFocus: false, enabled: !isGuestMode });
   const logoutMutation = trpc.auth.logout.useMutation({ onSuccess: () => { utils.auth.me.setData(undefined, null); } });
 
   useEffect(() => {
@@ -39,22 +39,26 @@ export function useAuth(options?: UseAuthOptions) {
 
   const logout = useCallback(async () => {
     try {
-      if (supabase) await supabase.auth.signOut();
+      if (isGuestMode) {
+        try { localStorage.removeItem("tradelog-guest-id"); } catch {}
+      } else if (supabase) await supabase.auth.signOut();
       else await logoutMutation.mutateAsync();
     } catch (error: unknown) {
       if (error instanceof TRPCClientError && error.data?.code === "UNAUTHORIZED") return;
       throw error;
     } finally {
       try { sessionStorage.removeItem("manus-cookie"); } catch {}
-      utils.auth.me.setData(undefined, null);
-      await utils.auth.me.invalidate();
+      if (!isGuestMode) {
+        utils.auth.me.setData(undefined, null);
+        await utils.auth.me.invalidate();
+      }
     }
   }, [logoutMutation, utils]);
 
   const state = useMemo(() => {
-    const user = meQuery.data ?? (supabaseUser ? { name: supabaseUser.user_metadata?.full_name || supabaseUser.user_metadata?.name || null, email: supabaseUser.email || null } : null);
+    const user = isGuestMode ? { name: "Guest trader", email: null } : meQuery.data ?? (supabaseUser ? { name: supabaseUser.user_metadata?.full_name || supabaseUser.user_metadata?.name || null, email: supabaseUser.email || null } : null);
     try { localStorage.setItem("manus-runtime-user-info", JSON.stringify(user)); } catch {}
-    return { user, loading: meQuery.isLoading || logoutMutation.isPending || (isSupabaseConfigured && !supabaseSessionReady), error: meQuery.error ?? logoutMutation.error ?? null, isAuthenticated: Boolean(user) };
+    return { user, loading: !isGuestMode && (meQuery.isLoading || logoutMutation.isPending || (isSupabaseConfigured && !supabaseSessionReady)), error: meQuery.error ?? logoutMutation.error ?? null, isAuthenticated: Boolean(user) };
   }, [meQuery.data, meQuery.error, meQuery.isLoading, logoutMutation.error, logoutMutation.isPending, supabaseSessionReady, supabaseUser]);
 
   useEffect(() => {
@@ -65,5 +69,5 @@ export function useAuth(options?: UseAuthOptions) {
     if (redirectPath) window.location.href = redirectPath; else startLogin();
   }, [redirectOnUnauthenticated, redirectPath, logoutMutation.isPending, meQuery.isLoading, state.user]);
 
-  return { ...state, refresh: () => meQuery.refetch(), logout, loginWithPassword, signUp, supabaseEnabled: isSupabaseConfigured, guestEnabled: isGuestMode };
+  return { ...state, refresh: () => isGuestMode ? Promise.resolve({ data: state.user }) : meQuery.refetch(), logout, loginWithPassword, signUp, supabaseEnabled: isSupabaseConfigured, guestEnabled: isGuestMode };
 }

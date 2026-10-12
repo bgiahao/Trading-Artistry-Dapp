@@ -1,1 +1,1 @@
-{"routes":[{"path":"/","title":"TradeLog Dashboard"},{"path":"/journal","title":"Trade Journal"},{"path":"/analytics","title":"Performance Analytics"}]}
+{"routes":[{"path":"/","title":"TradeLog Dashboard"},{"path":"/dashboard","title":"TradeLog Dashboard"},{"path":"/journal","title":"Trade Journal"},{"path":"/analytics","title":"Performance Analytics"}]}
