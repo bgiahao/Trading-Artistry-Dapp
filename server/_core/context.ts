@@ -9,6 +9,15 @@ export type TrpcContext = {
   user: User | null;
 };
 
+async function authenticateGuestRequest(req: CreateExpressContextOptions["req"]): Promise<User | null> {
+  if (process.env.ALLOW_GUEST_AUTH !== "true") return null;
+  const guestId = req.headers["x-guest-id"];
+  if (typeof guestId !== "string" || !/^[a-zA-Z0-9_-]{8,80}$/.test(guestId)) return null;
+  const openId = `guest:${guestId}`;
+  await upsertUser({ openId, name: "Guest trader", loginMethod: "guest" });
+  return getUserByOpenId(openId) as Promise<User | null>;
+}
+
 async function authenticateSupabaseRequest(req: CreateExpressContextOptions["req"]): Promise<User | null> {
   const url = process.env.SUPABASE_URL;
   const anonKey = process.env.SUPABASE_ANON_KEY;
@@ -25,7 +34,10 @@ async function authenticateSupabaseRequest(req: CreateExpressContextOptions["req
 
 export async function createContext(opts: CreateExpressContextOptions): Promise<TrpcContext> {
   let user: User | null = null;
-  try { user = await authenticateSupabaseRequest(opts.req); } catch { user = null; }
+  try { user = await authenticateGuestRequest(opts.req); } catch { user = null; }
+  if (!user) {
+    try { user = await authenticateSupabaseRequest(opts.req); } catch { user = null; }
+  }
   if (!user) {
     try { user = await sdk.authenticateRequest(opts.req); } catch { user = null; }
   }

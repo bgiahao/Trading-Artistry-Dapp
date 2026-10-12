@@ -36,8 +36,12 @@ Vercel tự nhận các function trong `api/`. Không cần chạy Express serve
 
 ## 4. Authentication flow
 
+## 4A. Guest Mode production
+
+Deployment Vercel hiện bật Guest Mode theo yêu cầu sản phẩm. Guest Mode không gọi Manus OAuth hoặc Supabase Auth. Trình duyệt tạo một `tradelog-guest-id` riêng trong `localStorage`, gửi qua header `x-guest-id`, và backend tạo một user guest tương ứng để giữ dữ liệu riêng theo trình duyệt. Đây là anonymous access, không phải bảo vệ danh tính; người dùng cần Supabase Auth nếu cần đồng bộ dữ liệu an toàn giữa nhiều thiết bị.
+
 - Khi có `VITE_SUPABASE_URL` và `VITE_SUPABASE_ANON_KEY`, màn hình đăng nhập dùng Supabase Email/Password và có cả đăng ký.
 - Access token Supabase được gửi trong `Authorization: Bearer ...` tới tRPC.
 - Backend xác minh token với Supabase Auth, upsert user vào bảng `users`, rồi scope mọi trade theo user đó.
-- Nếu hai biến `VITE_SUPABASE_*` chưa có, Preview vẫn dùng Manus OAuth fallback.
-- Không bật bypass auth trong production. Các biến `VITE_BYPASS_AUTH`/`ALLOW_BYPASS_AUTH` chỉ là placeholders cho local development và hiện mặc định `false`.
+- Nếu tắt Guest Mode, khi hai biến `VITE_SUPABASE_*` chưa có, Preview vẫn dùng Manus OAuth fallback.
+- Không dùng Guest Mode cho dữ liệu nhạy cảm hoặc môi trường cần định danh người dùng.
