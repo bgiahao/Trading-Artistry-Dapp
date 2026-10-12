@@ -49,6 +49,7 @@ import {
 } from "recharts";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
+import { isSupabaseConfigured } from "@/lib/supabase";
 
 type View = "dashboard" | "journal" | "analytics";
 type AssetType = "Stocks" | "Crypto" | "Commodities/Futures";
@@ -161,7 +162,12 @@ function MiniTag({ children, tone = "slate" }: { children: React.ReactNode; tone
   return <span className={`inline-flex items-center rounded-full border px-2 py-1 text-[10px] font-medium ${classes[tone]}`}>{children}</span>;
 }
 
-function LoginScreen() {
+function LoginScreen({ loginWithPassword, signUp }: { loginWithPassword: (input: { email: string; password: string }) => Promise<void>; signUp: (input: { email: string; password: string }) => Promise<void> }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [pending, setPending] = useState(false);
+  const submit = async (event: FormEvent) => { event.preventDefault(); setPending(true); try { if (isSignUp) { await signUp({ email, password }); toast.success("Đã tạo tài khoản. Hãy kiểm tra email để xác nhận."); } else await loginWithPassword({ email, password }); } catch (error) { toast.error(error instanceof Error ? error.message : "Không thể đăng nhập"); } finally { setPending(false); } };
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#080d13] px-5 text-slate-100">
       <div className="pointer-events-none absolute -left-32 top-10 h-96 w-96 rounded-full bg-cyan-400/[0.08] blur-3xl" />
@@ -182,7 +188,7 @@ function LoginScreen() {
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-cyan-300">Welcome back</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-white">Mở workspace của bạn</h2>
             <p className="mt-4 text-sm leading-6 text-slate-400">Đăng nhập để xem Dashboard, nhật ký giao dịch và các insight hiệu suất cá nhân.</p>
-            <Button onClick={() => startLogin()} className="mt-8 h-12 w-full rounded-xl bg-cyan-300 font-semibold text-slate-950 hover:bg-cyan-200"><Sparkles className="mr-2 h-4 w-4" /> Đăng nhập với Manus</Button>
+            {isSupabaseConfigured ? <form onSubmit={submit} className="mt-8 space-y-3"><Input type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" className="h-12 rounded-xl border-white/[0.1] bg-white/[0.04]" /><Input type="password" required minLength={6} value={password} onChange={e => setPassword(e.target.value)} placeholder="Mật khẩu" className="h-12 rounded-xl border-white/[0.1] bg-white/[0.04]" /><Button type="submit" disabled={pending} className="h-12 w-full rounded-xl bg-cyan-300 font-semibold text-slate-950 hover:bg-cyan-200"><Sparkles className="mr-2 h-4 w-4" /> {pending ? "Đang xử lý..." : isSignUp ? "Đăng ký với Supabase" : "Đăng nhập với Supabase"}</Button><button type="button" onClick={() => setIsSignUp(value => !value)} className="w-full text-xs text-slate-500 hover:text-cyan-200">{isSignUp ? "Đã có tài khoản? Đăng nhập" : "Chưa có tài khoản? Đăng ký"}</button></form> : <Button onClick={() => startLogin()} className="mt-8 h-12 w-full rounded-xl bg-cyan-300 font-semibold text-slate-950 hover:bg-cyan-200"><Sparkles className="mr-2 h-4 w-4" /> Đăng nhập với Manus</Button>}
             <div className="mt-8 grid grid-cols-3 gap-2 text-center">
               {["Theo dõi R", "Equity Curve", "Import CSV"].map(item => <div key={item} className="rounded-xl border border-white/[0.07] bg-white/[0.025] px-2 py-3 text-[10px] text-slate-500">{item}</div>)}
             </div>
@@ -287,7 +293,7 @@ function toPayload(row: Record<string, string>) {
 }
 
 export default function Home() {
-  const { loading, user, logout } = useAuth();
+  const { loading, user, logout, loginWithPassword, signUp } = useAuth();
   const [location, setLocation] = useLocation();
   const routeView: View = location === "/journal" ? "journal" : location === "/analytics" ? "analytics" : "dashboard";
   const [view, setView] = useState<View>(routeView);
@@ -303,7 +309,7 @@ export default function Home() {
   const trades = tradesQuery.data || [];
   const completedTrades = useMemo(() => trades.filter(trade => trade.isComplete), [trades]);
   if (loading) return <div className="flex min-h-screen items-center justify-center bg-[#080d13] text-cyan-300"><div className="flex items-center gap-3 text-xs"><span className="h-2 w-2 animate-pulse rounded-full bg-cyan-300" /> Loading private workspace...</div></div>;
-  if (!user) return <LoginScreen />;
+  if (!user) return <LoginScreen loginWithPassword={loginWithPassword} signUp={signUp} />;
   const exportRows = () => trades.map(trade => ({ Symbol: trade.symbol, Asset: trade.assetType, Direction: trade.direction, Entry: trade.entryPrice, Exit: trade.exitPrice, Size: trade.positionSize, StopLoss: trade.stopLoss, TakeProfit: trade.takeProfit, Risk: trade.riskAmount, RR: trade.rrRatio, PnL: trade.pnl, R: trade.rMultiple, Result: trade.result, Setup: trade.setup, OpenedAt: new Date(trade.openedAt).toISOString(), ClosedAt: new Date(trade.closedAt).toISOString(), Notes: trade.notes || "", ChartUrl: trade.chartUrl || "" }));
   const download = (name: string, content: string, type: string) => { const blob = new Blob([content], { type }); const url = URL.createObjectURL(blob); const anchor = document.createElement("a"); anchor.href = url; anchor.download = name; anchor.click(); URL.revokeObjectURL(url); };
   const csvEscape = (value: unknown) => { const text = String(value ?? ""); return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text; };
