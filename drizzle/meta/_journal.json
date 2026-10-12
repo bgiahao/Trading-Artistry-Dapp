@@ -22,6 +22,13 @@
       "when": 1791597333684,
       "tag": "0002_wealthy_arclight",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1791779169357,
+      "tag": "0003_strong_frank_castle",
+      "breakpoints": true
     }
   ]
 }

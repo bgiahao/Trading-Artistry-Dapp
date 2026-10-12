@@ -1,4 +1,4 @@
-import { double, index, int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { boolean, double, index, int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
 
 export const users = mysqlTable("users", {
   id: int("id").autoincrement().primaryKey(),
@@ -34,6 +34,7 @@ export const trades = mysqlTable("trades", {
   pnl: double("pnl").notNull(),
   rMultiple: double("rMultiple").notNull(),
   result: mysqlEnum("result", ["win", "loss", "breakeven"]).notNull(),
+  isComplete: boolean("isComplete").default(true).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 }, table => ({
   userIdIdx: index("trades_user_id_idx").on(table.userId),
