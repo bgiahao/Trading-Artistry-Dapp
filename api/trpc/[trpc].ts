@@ -1,14 +1,20 @@
-import { createExpressMiddleware } from "@trpc/server/adapters/express";
+import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { appRouter } from "../../server/routers";
 import { createContext } from "../../server/_core/context";
 
-const handler = createExpressMiddleware({ router: appRouter, createContext });
-
-export default function trpcHandler(req: VercelRequest, res: VercelResponse) {
-  const originalUrl = req.url;
-  req.url = (req.url || "/").replace(/^\/api\/trpc/, "") || "/";
-  const result = handler(req as never, res as never, () => undefined);
-  req.url = originalUrl;
-  return result;
+export default async function trpcHandler(req: VercelRequest, res: VercelResponse) {
+  const protocol = req.headers["x-forwarded-proto"] || "https";
+  const host = req.headers.host || "localhost";
+  const url = `${protocol}://${host}${req.url || "/api/trpc"}`;
+  const headerEntries: [string, string][] = Object.entries(req.headers).flatMap(([key, value]) => value == null ? [] : [[key, Array.isArray(value) ? value.join(",") : value as string]]);
+  const request = new Request(url, {
+    method: req.method,
+    headers: new Headers(headerEntries),
+    body: req.method === "GET" || req.method === "HEAD" ? undefined : JSON.stringify(req.body ?? {}),
+  });
+  const response = await fetchRequestHandler({ endpoint: "/api/trpc", req: request, router: appRouter, createContext: () => createContext({ req: { headers: Object.fromEntries(request.headers.entries()) } as never, res: { clearCookie: () => undefined } as never, info: {} as never }) });
+  res.statusCode = response.status;
+  response.headers.forEach((value, key) => res.setHeader(key, value));
+  res.send(await response.text());
 }

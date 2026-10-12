@@ -1,5 +1,5 @@
 import { startLogin } from "@/const";
-import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import { isGuestMode, supabase, isSupabaseConfigured } from "@/lib/supabase";
 import { trpc } from "@/lib/trpc";
 import { TRPCClientError } from "@trpc/client";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -11,9 +11,9 @@ type Credentials = { email: string; password: string };
 export function useAuth(options?: UseAuthOptions) {
   const { redirectOnUnauthenticated = false, redirectPath } = options ?? {};
   const utils = trpc.useUtils();
-  const [supabaseSessionReady, setSupabaseSessionReady] = useState(!isSupabaseConfigured);
+  const [supabaseSessionReady, setSupabaseSessionReady] = useState(!isSupabaseConfigured || isGuestMode);
   const [supabaseUser, setSupabaseUser] = useState<{ email?: string; user_metadata?: { full_name?: string; name?: string } } | null>(null);
-  const meQuery = trpc.auth.me.useQuery(undefined, { retry: false, refetchOnWindowFocus: false, enabled: !isSupabaseConfigured || supabaseSessionReady });
+  const meQuery = trpc.auth.me.useQuery(undefined, { retry: false, refetchOnWindowFocus: false, enabled: true });
   const logoutMutation = trpc.auth.logout.useMutation({ onSuccess: () => { utils.auth.me.setData(undefined, null); } });
 
   useEffect(() => {
@@ -58,12 +58,12 @@ export function useAuth(options?: UseAuthOptions) {
   }, [meQuery.data, meQuery.error, meQuery.isLoading, logoutMutation.error, logoutMutation.isPending, supabaseSessionReady, supabaseUser]);
 
   useEffect(() => {
-    if (!redirectOnUnauthenticated || isSupabaseConfigured) return;
+    if (!redirectOnUnauthenticated || isSupabaseConfigured || isGuestMode) return;
     if (meQuery.isLoading || logoutMutation.isPending || state.user) return;
     if (typeof window === "undefined") return;
     if (redirectPath && window.location.pathname === redirectPath) return;
     if (redirectPath) window.location.href = redirectPath; else startLogin();
   }, [redirectOnUnauthenticated, redirectPath, logoutMutation.isPending, meQuery.isLoading, state.user]);
 
-  return { ...state, refresh: () => meQuery.refetch(), logout, loginWithPassword, signUp, supabaseEnabled: isSupabaseConfigured };
+  return { ...state, refresh: () => meQuery.refetch(), logout, loginWithPassword, signUp, supabaseEnabled: isSupabaseConfigured, guestEnabled: isGuestMode };
 }

@@ -6,7 +6,7 @@ import { createRoot } from "react-dom/client";
 import superjson from "superjson";
 import App from "./App";
 import { startLogin } from "./const";
-import { getSupabaseAccessToken, isSupabaseConfigured } from "./lib/supabase";
+import { getGuestId, getSupabaseAccessToken, isGuestMode, isSupabaseConfigured } from "./lib/supabase";
 import "./index.css";
 
 const queryClient = new QueryClient();
@@ -17,7 +17,7 @@ const redirectToLoginIfUnauthorized = (error: unknown) => {
 
   const isUnauthorized = error.message === UNAUTHED_ERR_MSG;
 
-  if (!isUnauthorized || isSupabaseConfigured) return;
+  if (!isUnauthorized || isSupabaseConfigured || isGuestMode) return;
 
   startLogin();
 };
@@ -44,6 +44,7 @@ const trpcClient = trpc.createClient({
       url: "/api/trpc",
       transformer: superjson,
       headers() {
+        if (isGuestMode) return { "x-guest-id": getGuestId() };
         const supabaseToken = getSupabaseAccessToken();
         if (supabaseToken) return { Authorization: `Bearer ${supabaseToken}` };
         // Preview auto-login fallback: when the browser blocks iframe cookies
