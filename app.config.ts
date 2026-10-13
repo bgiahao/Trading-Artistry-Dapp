@@ -1,3 +1,3 @@
 export default {
-  logoUrl: "https://cdn.simpleicons.org/chartdotjs/22d3ee",
+  logoUrl: "https://cdn.simpleicons.org/target/67e8f9",
 };
