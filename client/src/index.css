@@ -29,65 +29,31 @@
   --color-ring: var(--ring);
 }
 
-:root {
-  --radius: 0.72rem;
-  --primary: #67e8f9;
-  --primary-foreground: #071018;
-  --background: #080d13;
-  --foreground: #e2e8f0;
-  --card: #101923;
-  --card-foreground: #e2e8f0;
-  --popover: #101923;
-  --popover-foreground: #e2e8f0;
-  --secondary: #14202b;
-  --secondary-foreground: #cbd5e1;
-  --muted: #14202b;
-  --muted-foreground: #64748b;
-  --accent: #172531;
-  --accent-foreground: #f8fafc;
-  --destructive: #fb7185;
-  --destructive-foreground: #fff1f2;
-  --border: rgba(255, 255, 255, 0.1);
-  --input: rgba(255, 255, 255, 0.1);
-  --ring: rgba(103, 232, 249, 0.55);
-}
-
-.dark {
-  --primary: #67e8f9;
-  --primary-foreground: #071018;
-  --background: #080d13;
-  --foreground: #e2e8f0;
-  --card: #101923;
-  --card-foreground: #e2e8f0;
-  --popover: #101923;
-  --popover-foreground: #e2e8f0;
-  --secondary: #14202b;
-  --secondary-foreground: #cbd5e1;
-  --muted: #14202b;
-  --muted-foreground: #64748b;
-  --accent: #172531;
-  --accent-foreground: #f8fafc;
-  --destructive: #fb7185;
-  --destructive-foreground: #fff1f2;
-  --border: rgba(255, 255, 255, 0.1);
-  --input: rgba(255, 255, 255, 0.12);
-  --ring: rgba(103, 232, 249, 0.55);
-}
+:root { --radius: 0.72rem; --primary: #67e8f9; --primary-foreground: #071018; --background: #080d13; --foreground: #e2e8f0; --card: #101923; --card-foreground: #e2e8f0; --popover: #101923; --popover-foreground: #e2e8f0; --secondary: #14202b; --secondary-foreground: #cbd5e1; --muted: #14202b; --muted-foreground: #64748b; --accent: #172531; --accent-foreground: #f8fafc; --destructive: #fb7185; --destructive-foreground: #fff1f2; --border: rgba(255,255,255,.1); --input: rgba(255,255,255,.1); --ring: rgba(103,232,249,.55); }
+.dark { --background: #080d13; --foreground: #e2e8f0; --card: #101923; --card-foreground: #e2e8f0; --popover: #101923; --popover-foreground: #e2e8f0; --secondary: #14202b; --secondary-foreground: #cbd5e1; --muted: #14202b; --muted-foreground: #64748b; --accent: #172531; --accent-foreground: #f8fafc; --border: rgba(255,255,255,.1); --input: rgba(255,255,255,.12); }
+.light { --background: #f3f7fb; --foreground: #172033; --card: #ffffff; --card-foreground: #172033; --popover: #ffffff; --popover-foreground: #172033; --secondary: #e8eef5; --secondary-foreground: #334155; --muted: #e8eef5; --muted-foreground: #64748b; --accent: #dce8f2; --accent-foreground: #0f172a; --border: rgba(15,23,42,.12); --input: rgba(15,23,42,.14); --ring: rgba(8,145,178,.4); }
 
 @layer base {
   * { @apply border-border outline-ring/50; }
-  html { background: #080d13; }
+  html { background: var(--background); transition: background .2s ease; }
   body { @apply bg-background text-foreground; min-width: 320px; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
   button:not(:disabled), [role="button"]:not([aria-disabled="true"]), [type="button"]:not(:disabled), [type="submit"]:not(:disabled), [type="reset"]:not(:disabled), a[href], select:not(:disabled), input[type="checkbox"]:not(:disabled), input[type="radio"]:not(:disabled) { @apply cursor-pointer; }
-  ::selection { background: rgba(103, 232, 249, 0.22); color: #ecfeff; }
-  input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { opacity: 0.35; }
+  ::selection { background: rgba(103,232,249,.22); color: #ecfeff; }
+  input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { opacity: .35; }
 }
+@layer utilities { .xs\:inline { display: inline; } @media (min-width: 380px) { .xs\:inline { display: inline; } } }
+@media (max-width: 379px) { .xs\:inline { display: none; } }
 
-@layer utilities {
-  .xs\:inline { display: inline; }
-  @media (min-width: 380px) { .xs\:inline { display: inline; } }
-}
-
-@media (max-width: 379px) {
-  .xs\:inline { display: none; }
-}
+/* The dense trading canvas keeps its visual hierarchy in light mode while the surface becomes readable. */
+.light .bg-\[\#080d13\] { background-color: #f3f7fb; }
+.light .bg-\[\#0b121b\] { background-color: #e8eef5; }
+.light .bg-\[\#0e1721\] { background-color: #ffffff; }
+.light .bg-\[\#101923\]\/90 { background-color: rgba(255,255,255,.92); }
+.light .bg-\[\#101923\] { background-color: #ffffff; }
+.light .text-white { color: #172033; }
+.light .text-slate-100 { color: #243044; }
+.light .text-slate-300 { color: #475569; }
+.light .text-slate-400 { color: #64748b; }
+.light .text-slate-500 { color: #64748b; }
+.light .text-slate-600 { color: #94a3b8; }
+.light .border-white\/\[0\.08\], .light .border-white\/\[0\.07\], .light .border-white\/\[0\.09\], .light .border-white\/\[0\.1\] { border-color: rgba(15,23,42,.12); }
