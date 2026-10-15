@@ -24,3 +24,7 @@
 - [ ] Trades and Trade Detail provide tag/asset/date/result/setup filtering, execution chart markers, MAE, MFE, hold duration, expected-vs-realized R and pyramiding tree.
 - [ ] Playbook provides VCP and strategy checklist workflows with live checklist compliance and playbook-linked trade metrics.
 - [ ] Analytics provides time-of-day, weekday, monthly, tag/setup edge analysis and a historical-edge Kelly-inspired position sizing calculator.
+
+- [ ] Advanced Analytics provides report export actions for PDF/Print and Excel-compatible spreadsheet output using the currently selected account set.
+- [ ] Currency settings allow switching USD/EUR/GBP/% and applying a custom starting balance reset for the active account; percentage display uses that balance as its denominator.
+- [ ] Account manager supports multiple local accounts, adding an account, selecting an active account, checking multiple accounts for combined stats, and showing per-account trade count and P&L.
