@@ -12,6 +12,9 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/dashboard" component={Home} />
       <Route path="/journal" component={Home} />
+      <Route path="/trades/:id" component={Home} />
+      <Route path="/trades" component={Home} />
+      <Route path="/playbook" component={Home} />
       <Route path="/analytics" component={Home} />
       <Route path="/knowledge" component={Home} />
       <Route path="/links" component={Home} />

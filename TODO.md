@@ -17,3 +17,10 @@
 - [ ] Trade entry/edit supports Trading Fee / Commission and Swap / Overnight Fee, and calculates Net PnL = Gross PnL - Trading Fee - Swap Fee; win rate, equity curve, R-Multiple and drawdown use Net PnL.
 - [ ] Real-time market session ticker shows Sydney, Tokyo, London and New York Open/Closed state, London-New York overlap, and Auto/UTC/Asia/Saigon timezone choices.
 - [ ] Light/Dark theme toggle and basic profile settings (name, email, avatar initials and defaults) are available.
+
+- [ ] Main app routing exposes /dashboard, /journal, /trades, /trades/:id, /playbook and /analytics with one shared client-side trade state.
+- [ ] Dashboard exposes Net P&L, Win Rate, Profit Factor, Average Win/Loss, Total Trades, Average RRR, Expectancy, Sharpe Ratio, equity range filters, daily PnL calendar and Artistry consistency/risk review surfaces.
+- [ ] Daily Journal provides month-grid PnL, selected-day trade details, per-day notes, 1–5 discipline rating and economic-calendar context.
+- [ ] Trades and Trade Detail provide tag/asset/date/result/setup filtering, execution chart markers, MAE, MFE, hold duration, expected-vs-realized R and pyramiding tree.
+- [ ] Playbook provides VCP and strategy checklist workflows with live checklist compliance and playbook-linked trade metrics.
+- [ ] Analytics provides time-of-day, weekday, monthly, tag/setup edge analysis and a historical-edge Kelly-inspired position sizing calculator.
