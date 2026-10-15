@@ -18,6 +18,7 @@ function Router() {
       <Route path="/analytics" component={Home} />
       <Route path="/knowledge" component={Home} />
       <Route path="/links" component={Home} />
+      <Route path="/tools" component={Home} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

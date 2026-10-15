@@ -28,3 +28,7 @@
 - [ ] Advanced Analytics provides report export actions for PDF/Print and Excel-compatible spreadsheet output using the currently selected account set.
 - [ ] Currency settings allow switching USD/EUR/GBP/% and applying a custom starting balance reset for the active account; percentage display uses that balance as its denominator.
 - [ ] Account manager supports multiple local accounts, adding an account, selecting an active account, checking multiple accounts for combined stats, and showing per-account trade count and P&L.
+
+- [ ] Navigation includes a new “Công cụ & Sàn giao dịch” item routed to /tools.
+- [ ] The Tools page provides a clear category dropdown and two grouped areas: Exchanges & Brokers and chart-analysis tools.
+- [ ] Each exchange/tool item shows a compact logo-style icon, name, asset-type description, opens in a new tab, and uses the supplied referral links for FTMO, The5ers, Binance, Bybit, XM and TradingView; official home links are used for OKX, Exness and IC Markets where no referral URL was supplied.
