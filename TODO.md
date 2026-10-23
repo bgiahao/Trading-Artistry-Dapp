@@ -32,3 +32,7 @@
 - [ ] Navigation includes a new “Công cụ & Sàn giao dịch” item routed to /tools.
 - [ ] The Tools page provides a clear category dropdown and two grouped areas: Exchanges & Brokers and chart-analysis tools.
 - [ ] Each exchange/tool item shows a compact logo-style icon, name, asset-type description, opens in a new tab, and uses the supplied referral links for FTMO, The5ers, Binance, Bybit, XM and TradingView; official home links are used for OKX, Exness and IC Markets where no referral URL was supplied.
+
+- [ ] New trade entry uses a three-step SEPA wizard: execution inputs with live risk calculation and >8% warning, Trend Template/Base Pattern/Pivot & Market Regime checklist, and a real-time score audit preview.
+- [ ] calculateSEPAScore applies the specified 30/30/25/15 weighting, chasing thresholds, 8% risk rule and A+/A/B/C-FOMO grade mapping; saved trades retain score, grade, risk and chasing metrics.
+- [ ] SEPA audit fields are represented in the client trade model and PostgreSQL/Supabase Drizzle schema, with migration drizzle-pg/0001_broad_adam_warlock.sql generated for pivot, checklist, pattern, regime, score and audit metrics.

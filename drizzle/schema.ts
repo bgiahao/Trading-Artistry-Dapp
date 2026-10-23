@@ -4,6 +4,8 @@ export const userRoleEnum = pgEnum("user_role", ["user", "admin"]);
 export const assetTypeEnum = pgEnum("asset_type", ["Stocks", "Crypto", "Commodities/Futures"]);
 export const directionEnum = pgEnum("direction", ["Long", "Short"]);
 export const resultEnum = pgEnum("trade_result", ["win", "loss", "breakeven"]);
+export const patternTypeEnum = pgEnum("sepa_pattern_type", ["VCP", "CUP_HANDLE", "HTF", "DOUBLE_BOTTOM", "FLAT_BASE", "NONE"]);
+export const marketRegimeEnum = pgEnum("sepa_market_regime", ["CONFIRMED_UPTREND", "UPTREND_UNDER_PRESSURE", "MARKET_IN_CORRECTION"]);
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -28,6 +30,19 @@ export const trades = pgTable("trades", {
   positionSize: doublePrecision("position_size").notNull(),
   stopLoss: doublePrecision("stop_loss").notNull(),
   takeProfit: doublePrecision("take_profit").notNull(),
+  pivotPrice: doublePrecision("pivot_price").default(0).notNull(),
+  aboveMa50Ma200: boolean("above_ma50_ma200").default(false).notNull(),
+  ma200Uptrend: boolean("ma200_uptrend").default(false).notNull(),
+  near52wHigh: boolean("near_52w_high").default(false).notNull(),
+  patternType: patternTypeEnum("pattern_type").default("NONE").notNull(),
+  vcpContractions: integer("vcp_contractions"),
+  lastContractionPct: doublePrecision("last_contraction_pct"),
+  volumeDryup: boolean("volume_dryup").default(false).notNull(),
+  marketRegime: marketRegimeEnum("market_regime").default("CONFIRMED_UPTREND").notNull(),
+  sepaScore: integer("sepa_score").default(0).notNull(),
+  sepaGrade: varchar("sepa_grade", { length: 16 }).default("C / FOMO").notNull(),
+  chasingPct: doublePrecision("chasing_pct").default(0).notNull(),
+  riskPct: doublePrecision("risk_pct").default(0).notNull(),
   riskTradePct: doublePrecision("risk_trade_pct").default(1).notNull(),
   setup: varchar("setup", { length: 80 }).notNull(),
   chartUrl: varchar("chart_url", { length: 500 }),
