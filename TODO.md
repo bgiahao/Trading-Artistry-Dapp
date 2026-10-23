@@ -41,3 +41,6 @@
 - [x] Balance editing uses a pending value plus an explicit confirmation action; confirmed starting capital updates the active account and persists locally.
 - [x] The currency/account panel shows total equity across accounts and each account's calculated balance and realised net P&L, while account selection still controls visible analytics.
 - [x] The application provides Vietnamese and English language modes, persists the selection, and translates navigation, account controls, filters, dashboard KPI headings, journal labels and core workspace copy using financial terminology.
+
+- [x] Playbook supports creating, editing, deleting and locally persisting custom strategies with a name and one-or-more rules.
+- [x] Custom strategies are a shared source for Playbook checklist compliance, Stage 2 Pattern Validation strategy selection, and Performance Analytics setup/edge reporting; renaming a custom strategy updates existing local trade tags.
