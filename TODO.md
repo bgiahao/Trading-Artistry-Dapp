@@ -36,3 +36,8 @@
 - [ ] New trade entry uses a three-step SEPA wizard: execution inputs with live risk calculation and >8% warning, Trend Template/Base Pattern/Pivot & Market Regime checklist, and a real-time score audit preview.
 - [ ] calculateSEPAScore applies the specified 30/30/25/15 weighting, chasing thresholds, 8% risk rule and A+/A/B/C-FOMO grade mapping; saved trades retain score, grade, risk and chasing metrics.
 - [ ] SEPA audit fields are represented in the client trade model and PostgreSQL/Supabase Drizzle schema, with migration drizzle-pg/0001_broad_adam_warlock.sql generated for pivot, checklist, pattern, regime, score and audit metrics.
+
+- [x] Currency/account control allows deleting an individual account with confirmation, prevents deleting the final remaining account, and removes only that account's local trades.
+- [x] Balance editing uses a pending value plus an explicit confirmation action; confirmed starting capital updates the active account and persists locally.
+- [x] The currency/account panel shows total equity across accounts and each account's calculated balance and realised net P&L, while account selection still controls visible analytics.
+- [x] The application provides Vietnamese and English language modes, persists the selection, and translates navigation, account controls, filters, dashboard KPI headings, journal labels and core workspace copy using financial terminology.
