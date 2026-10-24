@@ -44,3 +44,9 @@
 
 - [x] Playbook supports creating, editing, deleting and locally persisting custom strategies with a name and one-or-more rules.
 - [x] Custom strategies are a shared source for Playbook checklist compliance, Stage 2 Pattern Validation strategy selection, and Performance Analytics setup/edge reporting; renaming a custom strategy updates existing local trade tags.
+
+- [ ] New Trade modal supports dynamic Scale-In and Scale-Out legs under one trade ID, with weighted average entry/exit and total size used for PnL and risk.
+- [ ] New Trade modal supports Setup Chart (Before Entry), Exit Chart (After Exit), pasted TradingView URLs and local image upload previews.
+- [ ] Net PnL subtracts slippage cost, commission/trading fees and swap/overnight fees; all complete-trade performance calculations use that net result.
+- [ ] Daily Journal supports attaching CPI, FOMC, NFP, Earnings Release, GDP and Rate Decision events to a selected date and persists them locally.
+- [ ] Performance Analytics includes maximum consecutive losses, winner-vs-loser average holding duration with loss-aversion warning, and planned R:R versus realized R adherence.
