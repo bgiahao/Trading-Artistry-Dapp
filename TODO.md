@@ -50,3 +50,6 @@
 - [ ] Net PnL subtracts slippage cost, commission/trading fees and swap/overnight fees; all complete-trade performance calculations use that net result.
 - [ ] Daily Journal supports attaching CPI, FOMC, NFP, Earnings Release, GDP and Rate Decision events to a selected date and persists them locally.
 - [ ] Performance Analytics includes maximum consecutive losses, winner-vs-loser average holding duration with loss-aversion warning, and planned R:R versus realized R adherence.
+
+- [ ] Theme system provides Dark Mode as the default Obsidian Emerald palette (#050505 canvas, #12141A cards, #1F2430 borders, #F3F4F6/#9CA3AF typography, #22C55E positive, #E11D48 negative).
+- [ ] Theme toggle in the navigation bar switches to Light Mode Ocean Coral (#F5F5F7 canvas, #FCFCFD cards, #E5E7EB borders, #1C1C2B/#66667A typography, #1E3A8A positive, #F07C82 negative) and persists the user preference locally.
