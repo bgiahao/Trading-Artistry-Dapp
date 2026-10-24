@@ -59,3 +59,6 @@
 - [ ] Vietnamese mode translates modal titles, step labels, descriptions, explanations, validation labels and action buttons; only strategy names and user-authored names remain unchanged.
 - [ ] Theme switching is available inside the user/account settings panel and retains the selected Dark/Light preference.
 - [ ] The supplied Trading Artistry SVG is used as the sidebar logo, favicon and project branding logo metadata.
+
+- [ ] Vietnamese mode translates the remaining static navigation, dashboard, journal, analytics, playbook, tools, account and trade-entry text through a shared DOM-safe label dictionary while preserving user-authored strategy names.
+- [ ] The latest supplied Trading Artistry mountain SVG is used for the in-app logo, favicon and project metadata.
