@@ -53,3 +53,9 @@
 
 - [ ] Theme system provides Dark Mode as the default Obsidian Emerald palette (#050505 canvas, #12141A cards, #1F2430 borders, #F3F4F6/#9CA3AF typography, #22C55E positive, #E11D48 negative).
 - [ ] Theme toggle in the navigation bar switches to Light Mode Ocean Coral (#F5F5F7 canvas, #FCFCFD cards, #E5E7EB borders, #1C1C2B/#66667A typography, #1E3A8A positive, #F07C82 negative) and persists the user preference locally.
+
+- [ ] Stage 2 Pattern Validation displays the selected Playbook strategy name and all of its saved rules, while preserving strategy names in specialized English or the user's custom wording.
+- [ ] Base Pattern supports built-in options plus user-created patterns; newly saved patterns are persisted locally and available in the next trade-entry form.
+- [ ] Vietnamese mode translates modal titles, step labels, descriptions, explanations, validation labels and action buttons; only strategy names and user-authored names remain unchanged.
+- [ ] Theme switching is available inside the user/account settings panel and retains the selected Dark/Light preference.
+- [ ] The supplied Trading Artistry SVG is used as the sidebar logo, favicon and project branding logo metadata.

@@ -1,3 +1,3 @@
 export default {
-  logoUrl: "https://cdn.simpleicons.org/target/67e8f9",
+  logoUrl: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663276039649/bERuTVvESipReczr.svg",
 };
