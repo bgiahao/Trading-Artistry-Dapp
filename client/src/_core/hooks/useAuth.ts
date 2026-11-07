@@ -12,7 +12,7 @@ export function useAuth(options?: UseAuthOptions) {
   const { redirectOnUnauthenticated = false, redirectPath } = options ?? {};
   const utils = trpc.useUtils();
   const [supabaseSessionReady, setSupabaseSessionReady] = useState(!isSupabaseConfigured || isGuestMode);
-  const [supabaseUser, setSupabaseUser] = useState<{ email?: string; user_metadata?: { full_name?: string; name?: string } } | null>(null);
+  const [supabaseUser, setSupabaseUser] = useState<{ id?: string; email?: string; user_metadata?: { full_name?: string; name?: string; avatar_url?: string } } | null>(null);
   const meQuery = trpc.auth.me.useQuery(undefined, { retry: false, refetchOnWindowFocus: false, enabled: !isGuestMode });
   const logoutMutation = trpc.auth.logout.useMutation({ onSuccess: () => { utils.auth.me.setData(undefined, null); } });
 
@@ -37,6 +37,12 @@ export function useAuth(options?: UseAuthOptions) {
     if (error) throw error;
   }, []);
 
+  const loginWithGoogle = useCallback(async () => {
+    if (!supabase) throw new Error("Supabase Auth chưa được cấu hình");
+    const { error } = await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: `${window.location.origin}/dashboard` } });
+    if (error) throw error;
+  }, []);
+
   const logout = useCallback(async () => {
     try {
       if (isGuestMode) {
@@ -56,7 +62,7 @@ export function useAuth(options?: UseAuthOptions) {
   }, [logoutMutation, utils]);
 
   const state = useMemo(() => {
-    const user = isGuestMode ? { name: "Guest trader", email: null } : meQuery.data ?? (supabaseUser ? { name: supabaseUser.user_metadata?.full_name || supabaseUser.user_metadata?.name || null, email: supabaseUser.email || null } : null);
+    const user = isGuestMode ? { name: "Guest trader", email: null } : meQuery.data ?? (supabaseUser ? { id: supabaseUser.id, name: supabaseUser.user_metadata?.full_name || supabaseUser.user_metadata?.name || null, email: supabaseUser.email || null, avatarUrl: supabaseUser.user_metadata?.avatar_url || null } : null);
     try { localStorage.setItem("manus-runtime-user-info", JSON.stringify(user)); } catch {}
     return { user, loading: !isGuestMode && (meQuery.isLoading || logoutMutation.isPending || (isSupabaseConfigured && !supabaseSessionReady)), error: meQuery.error ?? logoutMutation.error ?? null, isAuthenticated: Boolean(user) };
   }, [meQuery.data, meQuery.error, meQuery.isLoading, logoutMutation.error, logoutMutation.isPending, supabaseSessionReady, supabaseUser]);
@@ -69,5 +75,5 @@ export function useAuth(options?: UseAuthOptions) {
     if (redirectPath) window.location.href = redirectPath; else startLogin();
   }, [redirectOnUnauthenticated, redirectPath, logoutMutation.isPending, meQuery.isLoading, state.user]);
 
-  return { ...state, refresh: () => isGuestMode ? Promise.resolve({ data: state.user }) : meQuery.refetch(), logout, loginWithPassword, signUp, supabaseEnabled: isSupabaseConfigured, guestEnabled: isGuestMode };
+  return { ...state, refresh: () => isGuestMode ? Promise.resolve({ data: state.user }) : meQuery.refetch(), logout, loginWithPassword, loginWithGoogle, signUp, supabaseEnabled: isSupabaseConfigured, guestEnabled: isGuestMode };
 }

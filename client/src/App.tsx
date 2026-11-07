@@ -3,8 +3,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
+import AuthGate from "./components/AuthGate";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import ProfileSettings from "./pages/ProfileSettings";
 
 function Router() {
   return (
@@ -19,6 +21,7 @@ function Router() {
       <Route path="/knowledge" component={Home} />
       <Route path="/links" component={Home} />
       <Route path="/tools" component={Home} />
+      <Route path="/settings/profile" component={ProfileSettings} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
@@ -28,10 +31,10 @@ function Router() {
 export default function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider defaultTheme="dark">
+      <ThemeProvider defaultTheme="dark" switchable>
         <TooltipProvider>
           <Toaster theme="dark" />
-          <Router />
+          <AuthGate><Router /></AuthGate>
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

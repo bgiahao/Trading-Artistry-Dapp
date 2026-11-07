@@ -62,3 +62,8 @@
 
 - [ ] Vietnamese mode translates the remaining static navigation, dashboard, journal, analytics, playbook, tools, account and trade-entry text through a shared DOM-safe label dictionary while preserving user-authored strategy names.
 - [ ] The latest supplied Trading Artistry mountain SVG is used for the in-app logo, favicon and project metadata.
+
+- [x] Supabase Auth supports Google OAuth and Email/Password through a dark Obsidian Emerald login/register modal; unauthenticated users cannot enter the app when Supabase is configured.
+- [x] The Sidebar bottom profile area shows the authenticated user's avatar, display name and email, with account settings and Sign Out actions.
+- [x] `/settings/profile` allows changing Display Name, Avatar URL, default Risk % and default currency USD/VND/EUR/GBP, with persistence to Supabase Auth metadata and `profiles`.
+- [x] Supabase migration creates `profiles`, enables RLS for profiles, and restricts each trader to their own `public.trades` rows through the Supabase-authenticated owner mapping; it must be applied in the Supabase SQL Editor before production data access is enabled.

@@ -3,8 +3,8 @@
   "outputDirectory": "dist/public",
   "framework": "vite",
   "env": {
-    "VITE_GUEST_MODE": "true",
-    "ALLOW_GUEST_AUTH": "true"
+    "VITE_GUEST_MODE": "false",
+    "ALLOW_GUEST_AUTH": "false"
   },
   "rewrites": [
     { "source": "/((?!api/).*)", "destination": "/index.html" }
