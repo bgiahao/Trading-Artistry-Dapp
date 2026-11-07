@@ -69,3 +69,6 @@
 - [x] Supabase migration creates `profiles`, enables RLS for profiles, and restricts each trader to their own `public.trades` rows through the Supabase-authenticated owner mapping; it must be applied in the Supabase SQL Editor before production data access is enabled.
 
 - [ ] Guest Demo provides a Demo\/Guest button on Auth, starts with clean Swing Trading mock data, shows a warning banner, persists temporary local changes, and clears guest data on logout or tab close.
+
+- [x] Global Filter & Date Range controls are interactive: Filter supports all/win/loss/breakeven/open, Date Range supports ALL/YTD/MONTH/WEEK, and account selection supports multi-account checkboxes. The resulting filtered trade set drives KPI cards, equity curves, calendar PnL, analytics and Trade Log.
+- [x] Dashboard and Daily Journal calendar month arrows update current month/year and render the correct days, PnL totals and trade counts for the selected month.
