@@ -67,3 +67,5 @@
 - [x] The Sidebar bottom profile area shows the authenticated user's avatar, display name and email, with account settings and Sign Out actions.
 - [x] `/settings/profile` allows changing Display Name, Avatar URL, default Risk % and default currency USD/VND/EUR/GBP, with persistence to Supabase Auth metadata and `profiles`.
 - [x] Supabase migration creates `profiles`, enables RLS for profiles, and restricts each trader to their own `public.trades` rows through the Supabase-authenticated owner mapping; it must be applied in the Supabase SQL Editor before production data access is enabled.
+
+- [ ] Guest Demo provides a Demo\/Guest button on Auth, starts with clean Swing Trading mock data, shows a warning banner, persists temporary local changes, and clears guest data on logout or tab close.

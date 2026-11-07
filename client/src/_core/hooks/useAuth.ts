@@ -1,5 +1,5 @@
 import { startLogin } from "@/const";
-import { isGuestMode, supabase, isSupabaseConfigured } from "@/lib/supabase";
+import { clearGuestDemoData, isGuestDemoEnabled, isGuestMode, supabase, isSupabaseConfigured } from "@/lib/supabase";
 import { trpc } from "@/lib/trpc";
 import { TRPCClientError } from "@trpc/client";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -45,7 +45,8 @@ export function useAuth(options?: UseAuthOptions) {
 
   const logout = useCallback(async () => {
     try {
-      if (isGuestMode) {
+      if (isGuestMode || isGuestDemoEnabled()) {
+        clearGuestDemoData();
         try { localStorage.removeItem("tradelog-guest-id"); } catch {}
       } else if (supabase) await supabase.auth.signOut();
       else await logoutMutation.mutateAsync();

@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/lib/supabase";
+import { enableGuestDemo, supabase } from "@/lib/supabase";
 import { useState } from "react";
 import { LockKeyhole, Mail, X } from "lucide-react";
 
-type Props = { onClose?: () => void };
+type Props = { onClose?: () => void; onGuest?: () => void };
 
-export default function SupabaseAuthModal({ onClose }: Props) {
+export default function SupabaseAuthModal({ onClose, onGuest }: Props) {
   const [mode, setMode] = useState<"login" | "register">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,6 +45,7 @@ export default function SupabaseAuthModal({ onClose }: Props) {
       <label className="mb-1 mt-4 block text-xs text-[#9CA3AF]">Mật khẩu</label><div className="relative"><LockKeyhole className="absolute left-3 top-3 h-4 w-4 text-[#6B7280]" /><Input value={password} onChange={e => setPassword(e.target.value)} type="password" placeholder="Tối thiểu 6 ký tự" className="h-10 border-[#303744] bg-[#0B0D10] pl-9 text-[#F3F4F6]" onKeyDown={e => e.key === "Enter" && void submit()} /></div>
       {message && <p className="mt-3 rounded-md border border-[#303744] bg-[#0B0D10] px-3 py-2 text-xs text-[#9CA3AF]">{message}</p>}
       <Button disabled={busy} onClick={() => void submit()} className="mt-5 h-11 w-full bg-[#22C55E] font-semibold text-[#050505] hover:bg-[#4ADE80]">{busy ? "Đang xử lý…" : mode === "login" ? "Đăng nhập bằng email" : "Đăng ký bằng email"}</Button>
+      <Button disabled={busy} onClick={() => { enableGuestDemo(); onGuest?.(); }} variant="outline" className="mt-3 h-11 w-full border-[#7C5E10] bg-[#2A210C] text-[#FDE68A] hover:bg-[#3A2E10]">Dùng thử bản Demo / Tài khoản Khách</Button>
       <button onClick={() => { setMode(mode === "login" ? "register" : "login"); setMessage(""); }} className="mt-4 w-full text-center text-xs text-[#22C55E] hover:underline">{mode === "login" ? "Chưa có tài khoản? Đăng ký ngay" : "Đã có tài khoản? Đăng nhập"}</button>
     </div>
   </div>;
